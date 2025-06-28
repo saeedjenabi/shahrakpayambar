@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>مجتمع مسکونی پیامبر | صفحه اصلی</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap');
+  body {
+    font-family: 'Vazirmatn', Tahoma, sans-serif;
+    direction: rtl;
+    margin: 0;
+    background-color: #f4f6f8;
+    color: #333;
+  }
+  header {
+    background: #2c3e50;
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  header h1 {
+    margin: 0;
+    font-weight: 700;
+    font-size: 1.8rem;
+  }
+  nav {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+  nav a {
+    color: white;
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+    font-weight: 600;
+  }
+  nav a:hover {
+    background-color: #27ae60;
+  }
+  main {
+    max-width: 960px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
+  section.intro {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    align-items: center;
+  }
+  .intro-text {
+    flex: 1 1 300px;
+  }
+  .intro-text h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #27ae60;
+  }
+  .intro-text p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+  }
+  .intro-image {
+    flex: 1 1 300px;
+    text-align: center;
+  }
+  .intro-image img {
+    max-width: 100%;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+  }
+  section.amenities {
+    margin-top: 3rem;
+  }
+  section.amenities h2 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 2rem;
+  }
+  .amenities-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+  }
+  .amenity-item {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    padding: 1.5rem;
+    width: 180px;
+    text-align: center;
+    transition: transform 0.3s ease;
+  }
+  .amenity-item:hover {
+    transform: translateY(-5px);
+  }
+  .amenity-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #27ae60;
+  }
+  .amenity-title {
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  section.map {
+    margin-top: 3rem;
+    text-align: center;
+  }
+  .map iframe {
+    width: 100%;
+    max-width: 960px;
+    height: 350px;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+  }
+  footer {
+    background: #2c3e50;
+    color: white;
+    text-align: center;
+    padding: 1.5rem 1rem;
+    margin-top: 4rem;
+  }
+  footer p {
+    margin: 0.5rem 0;
+  }
+  @media (max-width: 700px) {
+    section.intro {
+      flex-direction: column;
+    }
+    nav {
+      justify-content: center;
+    }
+    .amenities-list {
+      flex-direction: column;
+      align-items: center;
+    }
+    .amenity-item {
+      width: 80%;
+      max-width: 300px;
+    }
+  }
+</style>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+</head>
+<body>
+
+<header>
+  <h1>مجتمع مسکونی پیامبر</h1>
+  <nav>
+    <a href="index.html">خانه</a>
+    <a href="news.html">اخبار</a>
+    <a href="amenities.html">امکانات</a>
+    <a href="payment.html">پرداخت شارژ</a>
+    <a href="contact.html">تماس با مدیریت</a>
+    <a href="asasnameh.html">اساسنامه</a>
+    <a href="login.html">ورود ساکنین</a>
+    <a href="request.html">ثبت درخواست</a>
+  </nav>
+</header>
+
+<main>
+  <section class="intro">
+    <div class="intro-text">
+      <h2>به مجتمع مسکونی پیامبر خوش آمدید</h2>
+      <p>
+        مجتمع مسکونی پیامبر واقع در تهران، اتوبان حکیم، با ۲۱۲ واحد مسکونی و امکانات رفاهی متعدد، محیطی امن و آرام برای زندگی شما فراهم کرده است.
+        این مجتمع با ۱۹ بلوک مسکونی و تجاری، فضایی مدرن و آرام برای خانواده‌های محترم ایجاد نموده است.
+      </p>
+    </div>
+    <div class="intro-image">
+      <img src="shahrak.jpg" alt="نمای مجتمع مسکونی پیامبر" />
+    </div>
+  </section>
+
+  <section class="amenities">
+    <h2>امکانات شهرک</h2>
+    <div class="amenities-list">
+      <div class="amenity-item">
+        <div class="amenity-icon"><i class="fas fa-shield-alt"></i></div>
+        <div class="amenity-title">امنیت ۲۴ ساعته</div>
+        <div>نگهبانی و دوربین‌های مداربسته فعال</div>
+      </div>
+      <div class="amenity-item">
+        <div class="amenity-icon"><i class="fas fa-tree"></i></div>
+        <div class="amenity-title">فضای سبز</div>
+        <div>باغچه‌ها و پارک‌های کوچک در سطح شهرک</div>
+      </div>
+      <div class="amenity-item">
+        <div class="amenity-icon"><i class="fas fa-parking"></i></div>
+        <div class="amenity-title">پارکینگ اختصاصی</div>
+        <div>پارکینگ مازاد بر پارکینگ سندی</div>
+       </div>
+  </section>
+
+  <section class="map">
+    <h2>موقعیت جغرافیایی شهرک</h2>
+    <iframe 
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3240.0276666804665!2d51.33550981525809!3d35.74223938016719!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3f8dfbbfd3e6be4b%3A0x9b5bf59e7b13ca43!2z2LPYsdmK2Kkg2KfZhNi02YbYsdiq2KfYp9mF2YjYsdmK2Kkg2KjZhtipINiq2YTYsdmK2Kkg2KfZhNipINmF2YLYqti12YbYp9iq!5e0!3m2!1sfa!2sir!4v1685039250601!5m2!1sfa!2sir" 
+      allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+  </section>
+</main>
+
+<footer>
+  <p>مجتمع مسکونی پیامبر © 2025 - تمامی حقوق محفوظ است.</p>
+  <p>تهران، اتوبان حکیم، غرب خیابان پیامبر مرکزی، روبروی مسجد پیامبر</p>
+  <p>021-44076333</p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>امکانات مجتمع | مجتمع مسکونی پیامبر</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap');
+  body {
+    font-family: 'Vazirmatn', Tahoma, sans-serif;
+    direction: rtl;
+    margin: 0;
+    background-color: #f7f9fc;
+    color: #34495e;
+  }
+  header {
+    background: #34495e;
+    color: #ecf0f1;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+  header h1 {
+    margin: 0;
+    font-weight: 700;
+    font-size: 1.9rem;
+  }
+  nav {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  nav a {
+    color: #ecf0f1;
+    text-decoration: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+  }
+  nav a:hover, nav a:focus {
+    background-color: #27ae60;
+    outline: none;
+  }
+  main {
+    max-width: 1024px;
+    margin: 3rem auto 5rem;
+    padding: 0 1rem;
+  }
+  section.amenities {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.07);
+  }
+  section.amenities h2 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 2.5rem;
+    font-size: 2.2rem;
+    font-weight: 700;
+  }
+  .amenities-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2.5rem;
+  }
+  .amenity-item {
+    background: #ecf0f1;
+    border-radius: 14px;
+    padding: 2rem 1.5rem;
+    width: 240px;
+    text-align: center;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .amenity-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  }
+  .amenity-icon {
+    font-size: 4.5rem;
+    margin-bottom: 1.3rem;
+    color: #27ae60;
+  }
+  .amenity-title {
+    font-weight: 700;
+    font-size: 1.4rem;
+    margin-bottom: 0.8rem;
+    color: #2c3e50;
+  }
+  .amenity-desc {
+    font-size: 1.05rem;
+    color: #34495e;
+    line-height: 1.5;
+  }
+  footer {
+    background: #34495e;
+    color: #ecf0f1;
+    text-align: center;
+    padding: 2.5rem 1rem;
+    margin-top: 6rem;
+  }
+  footer .footer-links {
+    margin-bottom: 1.5rem;
+  }
+  footer .footer-links a {
+    color: #ecf0f1;
+    text-decoration: none;
+    margin: 0 12px;
+    font-weight: 600;
+    transition: color 0.3s ease;
+  }
+  footer .footer-links a:hover {
+    color: #27ae60;
+  }
+  footer p {
+    margin: 0.6rem 0;
+    font-size: 0.95rem;
+  }
+  footer .social-icons a {
+    color: #27ae60;
+    margin: 0 12px;
+    font-size: 1.6rem;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  footer .social-icons a:hover {
+    color: #1e8449;
+  }
+  @media (max-width: 840px) {
+    main {
+      margin: 2rem 1rem 4rem;
+    }
+    .amenities-list {
+      flex-direction: column;
+      align-items: center;
+    }
+    .amenity-item {
+      width: 90%;
+      max-width: 350px;
+    }
+  }
+</style>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+</head>
+<body>
+
+<header>
+  <h1>مجتمع مسکونی پیامبر</h1>
+  <nav>
+    <a href="index.html">خانه</a>
+    <a href="news.html">اخبار</a>
+    <a href="amenities.html">امکانات</a>
+    <a href="payment.html">پرداخت شارژ</a>
+    <a href="contact.html">تماس با مدیریت</a>
+    <a href="asasnameh.html">اساسنامه</a>
+    <a href="login.html">ورود ساکنین</a>
+    <a href="request.html">ثبت درخواست</a>
+  </nav>
+</header>
+
+<main>
+  <section class="amenities">
+    <h2>امکانات مجتمع مسکونی پیامبر</h2>
+    <div class="amenities-list">
+      <div class="amenity-item">
+        <div class="amenity-icon"><i class="fas fa-shield-alt"></i></div>
+        <div class="amenity-title">امنیت ۲۴ ساعته</div>
+        <div class="amenity-desc">نگهبانی حرفه‌ای و دوربین‌های مداربسته در تمام نقاط مجتمع برای آرامش خاطر ساکنین.</div>
+      </div>
+      <div class="amenity-item">
+        <div class="amenity-icon"><i class="fas fa-swimming-pool"></i></div>
+        <div class="amenity-title">زیرساخت فیبر نوری</div>
+        <div class="amenity-desc">اینترنت پرسرعت فیبر نوری با زیرساخت شرکت مخابرات ایران.</div>
+      </div>
+      <div class="amenity-item">
+        <div class="amenity-icon"><i class="fas fa-tree"></i></div>
+        <div class="amenity-title">فضای سبز و پارک‌ها</div>
+        <div class="amenity-desc">محیطی سرسبز و زیبا با باغچه‌ها، پارک‌ها و مسیرهای پیاده‌روی.</div>
+      </div>
+      <div class="amenity-item">
+        <div class="amenity-icon"><i class="fas fa-parking"></i></div>
+        <div class="amenity-title">پارکینگ اختصاصی</div>
+        <div class="amenity-desc">پارکینگ مسقف و ایمن با ظرفیت کافی برای همه ساکنین.</div>
+      </div>
+      <div class="amenity-item">
+        <div class="amenity-icon"><i class="fas fa-cogs"></i></div>
+        <div class="amenity-title">بلوک بندی</div>
+        <div class="amenity-desc">متشکل از 19 بلوک کاملا مستقل از همدیگر  بلوک های 4 یا 8 یا 16 واحدی.</div>
+      </div>
+    </div>
+
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-links" style="margin-bottom:1.5rem;">
+    <a href="index.html">خانه</a> |
+    <a href="amenities.html">امکانات</a> |
+    <a href="payment.html">پرداخت شارژ</a> |
+    <a href="contact.html">تماس با مدیریت</a> |
+    <a href="asasnameh.html">اساسنامه</a> |
+    <a href="login.html">ورود ساکنین</a> |
+    <a href="request.html">ثبت درخواست</a>
+  </div>
+  <p>مجتمع مسکونی پیامبر © 2025. تمامی حقوق محفوظ است.</p>
+  <p>تهران، اتوبان حکیم، غرب خیابان پیامبر مرکزی، روبروی مسجد پیامبر</p>
+  <p>تلفن تماس: ۰۲۱-۱۲۳۴۵۶۷۸</p>
+  <div class="social-icons" style="margin-top:1rem;">
+    <a href="#" aria-label="تلگرام"><i class="fab fa-telegram fa-lg"></i></a>
+    <a href="#" aria-label="اینستاگرام"><i class="fab fa-instagram fa-lg"></i></a>
+    <a href="#" aria-label="واتساپ"><i class="fab fa-whatsapp fa-lg"></i></a>
+  </div>
+</footer>
+
+</body>
+</html>
