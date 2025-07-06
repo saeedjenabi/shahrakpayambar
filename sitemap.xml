@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- صفحه اصلی -->
+  <url>
+    <loc>https://www.shahrakpayambar.ir/</loc>
+    <lastmod>2025-07-06</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- درباره ما -->
+  <url>
+    <loc>https://www.shahrakpayambar.ir/about</loc>
+    <lastmod>2025-07-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- تماس با ما -->
+  <url>
+    <loc>https://www.shahrakpayambar.ir/contact</loc>
+    <lastmod>2025-07-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- خدمات یا محصولات -->
+  <url>
+    <loc>https://www.shahrakpayambar.ir/services</loc>
+    <lastmod>2025-07-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- بخش مقالات یا اخبار -->
+  <url>
+    <loc>https://www.shahrakpayambar.ir/blog</loc>
+    <lastmod>2025-07-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- نمونه یک مقاله -->
+  <url>
+    <loc>https://www.shahrakpayambar.ir/blog/sample-article</loc>
+    <lastmod>2025-07-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+</urlset>
