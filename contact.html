@@ -2,208 +2,86 @@
 <!DOCTYPE html>
 <html lang="fa">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>تماس با مدیریت | مجتمع مسکونی پیامبر</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap');
-  body {
-    font-family: 'Vazirmatn', Tahoma, sans-serif;
-    direction: rtl;
-    margin: 0;
-    background-color: #f7f9fc;
-    color: #34495e;
-  }
-  header {
-    background: #34495e;
-    color: #ecf0f1;
-    padding: 1rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-  }
-  header h1 {
-    margin: 0;
-    font-weight: 700;
-    font-size: 1.9rem;
-  }
-  nav {
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-  }
-  nav a {
-    color: #ecf0f1;
-    text-decoration: none;
-    padding: 10px 18px;
-    border-radius: 6px;
-    font-weight: 600;
-    transition: background-color 0.3s ease;
-  }
-  nav a:hover, nav a:focus {
-    background-color: #27ae60;
-    outline: none;
-  }
-  main {
-    max-width: 600px;
-    margin: 3rem auto 5rem;
-    background: white;
-    padding: 2rem 2.5rem;
-    border-radius: 14px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-  }
-  h2 {
-    text-align: center;
-    color: #27ae60;
-    margin-bottom: 2rem;
-    font-size: 2rem;
-  }
-  form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.3rem;
-  }
-  label {
-    font-weight: 600;
-    margin-bottom: 0.3rem;
-    color: #2c3e50;
-  }
-  input[type="text"],
-  input[type="email"],
-  textarea {
-    padding: 0.65rem 1rem;
-    font-size: 1rem;
-    border: 2px solid #bdc3c7;
-    border-radius: 8px;
-    transition: border-color 0.3s ease;
-    resize: vertical;
-  }
-  input[type="text"]:focus,
-  input[type="email"]:focus,
-  textarea:focus {
-    outline: none;
-    border-color: #27ae60;
-  }
-  textarea {
-    min-height: 120px;
-  }
-  button {
-    margin-top: 1.5rem;
-    padding: 0.85rem 0;
-    font-size: 1.15rem;
-    font-weight: 700;
-    color: white;
-    background-color: #27ae60;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  button:hover, button:focus {
-    background-color: #219150;
-  }
-  footer {
-    background: #34495e;
-    color: #ecf0f1;
-    text-align: center;
-    padding: 2.5rem 1rem;
-    margin-top: 6rem;
-  }
-  footer .footer-links {
-    margin-bottom: 1.5rem;
-  }
-  footer .footer-links a {
-    color: #ecf0f1;
-    text-decoration: none;
-    margin: 0 12px;
-    font-weight: 600;
-    transition: color 0.3s ease;
-  }
-  footer .footer-links a:hover {
-    color: #27ae60;
-  }
-  footer p {
-    margin: 0.6rem 0;
-    font-size: 0.95rem;
-  }
-  footer .social-icons a {
-    color: #27ae60;
-    margin: 0 12px;
-    font-size: 1.6rem;
-    text-decoration: none;
-    transition: color 0.3s ease;
-  }
-  footer .social-icons a:hover {
-    color: #1e8449;
-  }
-  @media (max-width: 640px) {
-    main {
-      margin: 2rem 1rem 4rem;
-      padding: 1.8rem 1.5rem;
-      max-width: 95%;
+  <meta charset="UTF-8" />
+  <title>فرم تماس با مدیریت</title>
+  <style>
+    body {
+      font-family: Tahoma, sans-serif;
+      direction: rtl;
+      background-color: #f2f2f2;
+      padding: 2rem;
+      color: #333;
     }
-  }
-</style>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    form {
+      max-width: 500px;
+      margin: auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.1);
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 1rem;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 0.7rem;
+      margin-top: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    button {
+      margin-top: 1.5rem;
+      padding: 0.8rem;
+      width: 100%;
+      background-color: #27ae60;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #219150;
+    }
+    .success {
+      text-align: center;
+      color: green;
+      font-weight: bold;
+      display: none;
+      margin-top: 1rem;
+    }
+  </style>
 </head>
 <body>
 
-<header>
-  <h1>مجتمع مسکونی پیامبر</h1>
-  <nav>
-    <a href="index.html">خانه</a>
-    <a href="news.html">اخبار</a>
-    <a href="amenities.html">امکانات</a>
-    <a href="payment.html">پرداخت شارژ</a>
-    <a href="contact.html">تماس با مدیریت</a>
-    <a href="asasnameh.html">اساسنامه</a>
-    <a href="login.html">ورود ساکنین</a>
-    <a href="request.html">ثبت درخواست</a>
-  </nav>
-</header>
+<form action="https://script.google.com/macros/s/AKfycbwzUIyk4TNXghV_VbjrJRDhMGCbveOmFHHip8D4piDWy0yrQddiVuXIYn4OVG_pXnYMfg/exec" method="POST" onsubmit="showSuccess()">
+  <h2 style="text-align:center;color:#27ae60;">تماس با مدیریت مجتمع</h2>
 
-<main>
-  <h2>تماس با مدیریت مجتمع</h2>
-  <form action="contact_submit.php" method="post">
-    <label for="name">نام و نام خانوادگی</label>
-    <input type="text" id="name" name="name" placeholder="نام خود را وارد کنید" required />
+  <label for="name">نام و نام خانوادگی:</label>
+  <input type="text" id="name" name="name" required>
 
-    <label for="email">ایمیل</label>
-    <input type="email" id="email" name="email" placeholder="ایمیل خود را وارد کنید" required />
+  <label for="email">ایمیل:</label>
+  <input type="email" id="email" name="email" required>
 
-    <label for="phone">تلفن تماس</label>
-    <input type="text" id="phone" name="phone" placeholder="شماره تماس" required />
+  <label for="phone">تلفن:</label>
+  <input type="text" id="phone" name="phone">
 
-    <label for="message">پیام شما</label>
-    <textarea id="message" name="message" placeholder="متن پیام خود را وارد کنید" required></textarea>
+  <label for="message">پیام:</label>
+  <textarea id="message" name="message" rows="4" required></textarea>
 
-    <button type="submit">ارسال پیام</button>
-  </form>
-</main>
+  <button type="submit">ارسال</button>
+  <div class="success" id="success-msg">پیام شما با موفقیت ارسال شد ✅</div>
+</form>
 
-<footer>
-  <div class="footer-links">
-    <a href="index.html">خانه</a> |
-    <a href="amenities.html">امکانات</a> |
-    <a href="payment.html">پرداخت شارژ</a> |
-    <a href="contact.html">تماس با مدیریت</a> |
-    <a href="asasnameh.html">اساسنامه</a> |
-    <a href="login.html">ورود ساکنین</a> |
-    <a href="request.html">ثبت درخواست</a>
-  </div>
-  <p>مجتمع مسکونی پیامبر © 2025. تمامی حقوق محفوظ است.</p>
-  <p>تهران، اتوبان حکیم، غرب خیابان پیامبر مرکزی، روبروی مسجد پیامبر</p>
-  <p>تلفن تماس: ۰۲۱-۱۲۳۴۵۶۷۸</p>
-  <div class="social-icons">
-    <a href="#" aria-label="تلگرام"><i class="fab fa-telegram fa-lg"></i></a>
-    <a href="#" aria-label="اینستاگرام"><i class="fab fa-instagram fa-lg"></i></a>
-    <a href="#" aria-label="واتساپ"><i class="fab fa-whatsapp fa-lg"></i></a>
-  </div>
-</footer>
+<script>
+  function showSuccess() {
+    document.getElementById("success-msg").style.display = "block";
+  }
+</script>
 
 </body>
 </html>
