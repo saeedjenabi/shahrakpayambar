@@ -5,152 +5,32 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>ثبت درخواست | مجتمع مسکونی پیامبر</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap');
-  body {
-    font-family: 'Vazirmatn', Tahoma, sans-serif;
-    direction: rtl;
-    margin: 0;
-    background-color: #f7f9fc;
-    color: #34495e;
-  }
-  header {
-    background: #34495e;
-    color: #ecf0f1;
-    padding: 1rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-  }
-  header h1 {
-    margin: 0;
-    font-weight: 700;
-    font-size: 1.9rem;
-  }
-  nav {
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-  }
-  nav a {
-    color: #ecf0f1;
-    text-decoration: none;
-    padding: 10px 18px;
-    border-radius: 6px;
-    font-weight: 600;
-    transition: background-color 0.3s ease;
-  }
-  nav a:hover, nav a:focus {
-    background-color: #27ae60;
-    outline: none;
-  }
-  main {
-    max-width: 500px;
-    margin: 3rem auto 5rem;
-    background: white;
-    padding: 2rem 2.5rem;
-    border-radius: 14px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-  }
-  h2 {
-    text-align: center;
-    color: #27ae60;
-    margin-bottom: 2rem;
-    font-size: 2rem;
-  }
-  form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.4rem;
-  }
-  label {
-    font-weight: 600;
-    margin-bottom: 0.3rem;
-    color: #2c3e50;
-  }
-  input[type="text"],
-  input[type="number"],
-  input[type="tel"],
-  textarea {
-    padding: 0.65rem 1rem;
-    font-size: 1rem;
-    border: 2px solid #bdc3c7;
-    border-radius: 8px;
-    transition: border-color 0.3s ease;
-    resize: vertical;
-  }
-  input[type="text"]:focus,
-  input[type="number"]:focus,
-  input[type="tel"]:focus,
-  textarea:focus {
-    outline: none;
-    border-color: #27ae60;
-  }
-  textarea {
-    min-height: 120px;
-  }
-  button {
-    margin-top: 1.8rem;
-    padding: 0.9rem 0;
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: white;
-    background-color: #27ae60;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  button:hover, button:focus {
-    background-color: #219150;
-  }
-  footer {
-    background: #34495e;
-    color: #ecf0f1;
-    text-align: center;
-    padding: 2.5rem 1rem;
-    margin-top: 6rem;
-  }
-  footer .footer-links {
-    margin-bottom: 1.5rem;
-  }
-  footer .footer-links a {
-    color: #ecf0f1;
-    text-decoration: none;
-    margin: 0 12px;
-    font-weight: 600;
-    transition: color 0.3s ease;
-  }
-  footer .footer-links a:hover {
-    color: #27ae60;
-  }
-  footer p {
-    margin: 0.6rem 0;
-    font-size: 0.95rem;
-  }
-  footer .social-icons a {
-    color: #27ae60;
-    margin: 0 12px;
-    font-size: 1.6rem;
-    text-decoration: none;
-    transition: color 0.3s ease;
-  }
-  footer .social-icons a:hover {
-    color: #1e8449;
-  }
-  @media (max-width: 540px) {
-    main {
-      margin: 2rem 1rem 4rem;
-      padding: 1.8rem 1.5rem;
-      max-width: 95%;
-    }
-  }
+  body { font-family: 'Vazirmatn', Tahoma, sans-serif; direction: rtl; margin: 0; background-color: #f7f9fc; color: #34495e; }
+  header { background: #34495e; color: #ecf0f1; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; position: sticky; top: 0; z-index: 1000; }
+  header h1 { margin: 0; font-weight: 700; font-size: 1.9rem; }
+  nav { display: flex; gap: 16px; flex-wrap: wrap; }
+  nav a { color: #ecf0f1; text-decoration: none; padding: 10px 18px; border-radius: 6px; font-weight: 600; transition: background-color 0.3s ease; }
+  nav a:hover, nav a:focus { background-color: #27ae60; outline: none; }
+  main { max-width: 500px; margin: 3rem auto 5rem; background: white; padding: 2rem 2.5rem; border-radius: 14px; box-shadow: 0 6px 20px rgba(0,0,0,0.1); }
+  h2 { text-align: center; color: #27ae60; margin-bottom: 2rem; font-size: 2rem; }
+  form { display: flex; flex-direction: column; gap: 1.4rem; }
+  label { font-weight: 600; margin-bottom: 0.3rem; color: #2c3e50; }
+  input, textarea { padding: 0.65rem 1rem; font-size: 1rem; border: 2px solid #bdc3c7; border-radius: 8px; transition: border-color 0.3s ease; resize: vertical; }
+  input:focus, textarea:focus { outline: none; border-color: #27ae60; }
+  textarea { min-height: 120px; }
+  button { margin-top: 1.8rem; padding: 0.9rem 0; font-size: 1.2rem; font-weight: 700; color: white; background-color: #27ae60; border: none; border-radius: 10px; cursor: pointer; transition: background-color 0.3s ease; }
+  button:hover, button:focus { background-color: #219150; }
+  footer { background: #34495e; color: #ecf0f1; text-align: center; padding: 2.5rem 1rem; margin-top: 6rem; }
+  footer .footer-links { margin-bottom: 1.5rem; }
+  footer .footer-links a { color: #ecf0f1; text-decoration: none; margin: 0 12px; font-weight: 600; transition: color 0.3s ease; }
+  footer .footer-links a:hover { color: #27ae60; }
+  footer p { margin: 0.6rem 0; font-size: 0.95rem; }
+  footer .social-icons a { color: #27ae60; margin: 0 12px; font-size: 1.6rem; text-decoration: none; transition: color 0.3s ease; }
+  footer .social-icons a:hover { color: #1e8449; }
 </style>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
 </head>
 <body>
 
@@ -170,22 +50,15 @@
 
 <main>
   <h2>ثبت درخواست ساکنین</h2>
-  <form onsubmit="return handleSubmit(event)">
-    <label for="ownerName">نام مالک</label>
+  <form onsubmit="return handleRequestSubmit(event)">
+    <label for="ownerName">نام و نام خانوادگی</label>
     <input type="text" id="ownerName" name="ownerName" required />
-
-    <label for="unitNumber">شماره واحد</label>
-    <input type="number" id="unitNumber" name="unitNumber" required />
-
-    <label for="requestType">نوع درخواست</label>
-    <input type="text" id="requestType" name="requestType" required />
-
-    <label for="description">توضیحات</label>
-    <textarea id="description" name="description" required></textarea>
-
     <label for="mobile">شماره موبایل</label>
     <input type="tel" id="mobile" name="mobile" required />
-
+    <label for="unitNumber">شماره واحد</label>
+    <input type="text" id="unitNumber" name="unitNumber" required />
+    <label for="description">درخواست</label>
+    <textarea id="description" name="description" required></textarea>
     <button type="submit">ارسال درخواست</button>
     <div id="success-message" style="color: green; text-align: center; display: none; margin-top: 1rem;"></div>
   </form>
@@ -212,7 +85,7 @@
 </footer>
 
 <script>
-function handleSubmit(e) {
+function handleRequestSubmit(e) {
   e.preventDefault();
   const form = e.target;
   const data = new FormData(form);
