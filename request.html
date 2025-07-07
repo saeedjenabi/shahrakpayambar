@@ -92,7 +92,7 @@ function handleRequestSubmit(e) {
   const code = "PYMBR-" + Math.floor(100000 + Math.random() * 900000);
   data.append("trackingCode", code);
 
-  fetch("https://script.google.com/macros/s/AKfycbwzUIyk4TNXghV_VbjrJRDhMGCbveOmFHHip8D4piDWy0yrQddiVuXIYn4OVG_pXnYMfg/exec", {
+  fetch("https://script.google.com/macros/s/AKfycbw8D6h1nej0ODPb55BFW30VgmrMMlDJhv8FwB3khWUex2E4IYDVPwk-oQJOshtINTArSg/exec", {
     method: "POST",
     body: data
   })
