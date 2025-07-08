@@ -14,7 +14,7 @@
     color: #333;
 
   }
-  header {
+   header {
     background: #2c3e50;
     color: white;
     padding: 1rem 2rem;
@@ -22,9 +22,8 @@
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-
   }
-    header h1 {
+  header h1 {
     margin: 0;
     font-weight: 700;
     font-size: 1.8rem;
@@ -35,21 +34,20 @@
     flex-wrap: wrap;
   }
   nav a {
-     color: white;
+    color: white;
     text-decoration: none;
     padding: 8px 15px;
     border-radius: 4px;
     transition: background-color 0.3s ease;
     font-weight: 600;
-
   }
   nav a:hover {
-    text-decoration: underline;
+    background-color: #27ae60;
   }
   main {
-    max-width: 700px;
+    max-width: 1024px;
     background: white;
-    margin: 2rem auto;
+    margin: 3rem auto 5rem;
     padding: 1.5rem;
     border-radius: 8px;
   }
@@ -110,7 +108,6 @@
   <h1>مجتمع مسکونی پیامبر</h1>
   <nav>
     <a href="index.html">خانه</a>
-    <a href="news.html">اخبار</a>
     <a href="amenities.html">امکانات</a>
     <a href="payment.html">پرداخت شارژ</a>
     <a href="contact.html">تماس با مدیریت</a>
@@ -198,9 +195,23 @@
 </main>
 
 <footer>
-  <p>مجتمع مسکونی پیامبر © 2025 - تمامی حقوق محفوظ است.</p>
+  <div class="footer-links" style="margin-bottom:1.5rem;">
+    <a href="index.html">خانه</a> |
+    <a href="amenities.html">امکانات</a> |
+    <a href="payment.html">پرداخت شارژ</a> |
+    <a href="contact.html">تماس با مدیریت</a> |
+    <a href="asasnameh.html">اساسنامه</a> |
+    <a href="login.html">ورود ساکنین</a> |
+    <a href="request.html">ثبت درخواست</a>
+  </div>
+  <p>مجتمع مسکونی پیامبر © 2025. تمامی حقوق محفوظ است.</p>
   <p>تهران، اتوبان حکیم، غرب خیابان پیامبر مرکزی، روبروی مسجد پیامبر</p>
   <p>تلفن تماس: ۰۲۱-۱۲۳۴۵۶۷۸</p>
+  <div class="social-icons" style="margin-top:1rem;">
+    <a href="#" aria-label="تلگرام"><i class="fab fa-telegram fa-lg"></i></a>
+    <a href="#" aria-label="اینستاگرام"><i class="fab fa-instagram fa-lg"></i></a>
+    <a href="#" aria-label="واتساپ"><i class="fab fa-whatsapp fa-lg"></i></a>
+  </div>
 </footer>
 
 </body>
