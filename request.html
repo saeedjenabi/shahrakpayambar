@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fa">
 <head>
@@ -30,6 +29,78 @@
   footer p { margin: 0.6rem 0; font-size: 0.95rem; }
   footer .social-icons a { color: #27ae60; margin: 0 12px; font-size: 1.6rem; text-decoration: none; transition: color 0.3s ease; }
   footer .social-icons a:hover { color: #1e8449; }
+
+  /* ==== Popup (Modal) ==== */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+  }
+  .modal {
+    background: #fff;
+    width: min(92vw, 520px);
+    border-radius: 14px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    overflow: hidden;
+  }
+  .modal-header {
+    background: #27ae60;
+    color: #fff;
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .modal-header h3 {
+    margin: 0;
+    font-size: 1.2rem;
+  }
+  .modal-close {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 1.3rem;
+    cursor: pointer;
+  }
+  .modal-body {
+    padding: 1.25rem 1.25rem 1.5rem;
+    line-height: 1.9;
+    color: #2c3e50;
+  }
+  .spinner {
+    display: inline-block;
+    width: 1.1rem;
+    height: 1.1rem;
+    border: 3px solid #e5e7eb;
+    border-top-color: #fff;
+    border-right-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    vertical-align: middle;
+    margin-left: 8px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .modal-actions {
+    padding: 0 1.25rem 1.25rem;
+    display: flex;
+    gap: .75rem;
+    justify-content: flex-end;
+  }
+  .modal-actions button {
+    padding: .6rem 1rem;
+    border-radius: 10px;
+    border: 0;
+    cursor: pointer;
+    font-weight: 700;
+  }
+  .btn-primary { background: #27ae60; color: #fff; }
+  .btn-ghost { background: #eef2f7; color: #2c3e50; }
+  .muted { color: #6b7280; font-size: .95rem; }
+  .stack { display: grid; gap: .5rem; }
 </style>
 </head>
 <body>
@@ -44,6 +115,7 @@
     <a href="contact.html">تماس با مدیریت</a>
     <a href="asasnameh.html">اساسنامه</a>
     <a href="login.html">ورود ساکنین</a>
+    <a href="request.html">ثبت درخواست</a>
   </nav>
 </header>
 
@@ -83,10 +155,60 @@
   </div>
 </footer>
 
+<!-- Modal (hidden by default) -->
+<div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modalTitle">وضعیت ارسال</h3>
+      <button class="modal-close" aria-label="بستن" onclick="closeModal()"><i class="fa fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div id="modalDesc" class="stack">
+        <div id="modalMessage"><span class="spinner"></span> لطفاً منتظر بمانید…</div>
+        <div id="modalDetails" class="muted"></div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-primary" id="modalPrimaryBtn" style="display:none" onclick="closeModal()">بستن</button>
+    </div>
+  </div>
+</div>
+
 <script>
+function openModal(message, detailsHtml) {
+  document.getElementById('modalMessage').innerHTML = message || '';
+  document.getElementById('modalDetails').innerHTML = detailsHtml || '';
+  document.getElementById('modalPrimaryBtn').style.display = 'none';
+  document.getElementById('modalBackdrop').style.display = 'flex';
+}
+
+function updateModal(message, detailsHtml, showPrimary) {
+  if (message !== undefined) document.getElementById('modalMessage').innerHTML = message;
+  if (detailsHtml !== undefined) document.getElementById('modalDetails').innerHTML = detailsHtml;
+  document.getElementById('modalPrimaryBtn').style.display = showPrimary ? 'inline-block' : 'none';
+}
+
+function closeModal() {
+  document.getElementById('modalBackdrop').style.display = 'none';
+}
+
+function escToClose(e) {
+  if (e.key === 'Escape') closeModal();
+}
+document.addEventListener('keydown', escToClose);
+
 function handleRequestSubmit(e) {
   e.preventDefault();
   const form = e.target;
+
+  const ownerName = document.getElementById('ownerName').value.trim();
+  const mobile = document.getElementById('mobile').value.trim();
+  const unitNumber = document.getElementById('unitNumber').value.trim();
+  const description = document.getElementById('description').value.trim();
+
+  // Show modal with "please wait"
+  openModal('<span class="spinner"></span> لطفاً منتظر بمانید…', 'در حال ارسال اطلاعات شما به سامانه');
+
   const data = new FormData(form);
   const code = "PYMBR-" + Math.floor(100000 + Math.random() * 900000);
   data.append("trackingCode", code);
@@ -97,14 +219,28 @@ function handleRequestSubmit(e) {
   })
   .then(res => {
     if (res.ok) {
-      document.getElementById("success-message").innerText = "درخواست با موفقیت ثبت شد. کد پیگیری شما: " + code;
-      document.getElementById("success-message").style.display = "block";
+      // Success: show details in the modal
+      const details = `
+        <div class="stack">
+          <div><strong>کد پیگیری:</strong> ${code}</div>
+          <div><strong>نام:</strong> ${ownerName}</div>
+          <div><strong>موبایل:</strong> ${mobile}</div>
+          <div><strong>واحد:</strong> ${unitNumber}</div>
+          <div><strong>درخواست:</strong> ${description.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
+        </div>
+      `;
+      updateModal('درخواست شما با موفقیت ثبت شد ✅', details, true);
       form.reset();
+      // Optionally keep modal open until user closes.
     } else {
-      alert("خطا در ارسال اطلاعات. لطفاً دوباره تلاش کنید.");
+      // Failure: show error
+      updateModal('ارسال با مشکل مواجه شده، لطفاً بعداً تلاش بفرمایید. ❌', '', true);
     }
   })
-  .catch(() => alert("اتصال برقرار نشد."));
+  .catch(() => {
+    updateModal('ارسال با مشکل مواجه شده، لطفاً بعداً تلاش بفرمایید. ❌', '', true);
+  });
+
   return false;
 }
 </script>

@@ -13,35 +13,39 @@
     background-color: #f7f9fc;
     color: #34495e;
   }
-   header {
-    background: #2c3e50;
-    color: white;
+  header {
+    background: #34495e;
+    color: #ecf0f1;
     padding: 1rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
   }
   header h1 {
     margin: 0;
     font-weight: 700;
-    font-size: 1.8rem;
+    font-size: 1.9rem;
   }
   nav {
     display: flex;
-    gap: 15px;
+    gap: 16px;
     flex-wrap: wrap;
   }
   nav a {
-    color: white;
+    color: #ecf0f1;
     text-decoration: none;
-    padding: 8px 15px;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
+    padding: 10px 18px;
+    border-radius: 6px;
     font-weight: 600;
+    transition: background-color 0.3s ease;
   }
-  nav a:hover {
+  nav a:hover, nav a:focus {
     background-color: #27ae60;
+    outline: none;
   }
   main {
     max-width: 400px;
@@ -150,6 +154,7 @@
     <a href="payment.html">پرداخت شارژ</a>
     <a href="contact.html">تماس با مدیریت</a>
     <a href="asasnameh.html">اساسنامه</a>
+    <a href="login.html">ورود ساکنین</a>
     <a href="request.html">ثبت درخواست</a>
   </nav>
 </header>
@@ -158,7 +163,7 @@
   <h2>ورود ساکنین</h2>
   <form action="#" method="post">
     <label for="username">نام کاربری</label>
-    <input type="text" id="username" name="username" placeholder="نام کاربری یا شماره واحد" required />
+    <input type="text" id="username" name="username" placeholder="شماره موبایل مالک بدون صفر را وارد نمایید" required />
 
     <label for="password">رمز عبور</label>
     <input type="password" id="password" name="password" placeholder="رمز عبور خود را وارد کنید" required />
@@ -186,6 +191,111 @@
     <a href="#" aria-label="واتساپ"><i class="fab fa-whatsapp fa-lg"></i></a>
   </div>
 </footer>
+
+
+<!-- ===== Inline modal (hidden) + minimal styles, no change to existing layout ===== -->
+<style>
+  .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;z-index:2000}
+  .modal{background:#fff;width:min(92vw,520px);border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.25);overflow:hidden}
+  .modal-header{background:#27ae60;color:#fff;padding:1rem 1.25rem;display:flex;align-items:center;justify-content:space-between}
+  .modal-header h3{margin:0;font-size:1.1rem}
+  .modal-close{background:transparent;border:0;color:#fff;font-size:1.2rem;cursor:pointer}
+  .modal-body{padding:1.1rem 1.25rem 1.3rem;line-height:1.9;color:#2c3e50}
+  .spinner{display:inline-block;width:1.05rem;height:1.05rem;border:3px solid #e5e7eb;border-top-color:#fff;border-right-color:#fff;border-radius:50%;animation:spin .8s linear infinite;vertical-align:middle;margin-left:8px}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .stack{display:grid;gap:.5rem}
+</style>
+<div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modalTitle">وضعیت</h3>
+      <button class="modal-close" aria-label="بستن" onclick="document.getElementById('modalBackdrop').style.display='none'">×</button>
+    </div>
+    <div class="modal-body">
+      <div id="modalMessage"><span class="spinner"></span> لطفاً منتظر بمانید…</div>
+      <div id="modalDetails" class="stack"></div>
+    </div>
+  </div>
+</div>
+
+<!-- SheetJS for reading XLSX in-browser -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+<script>
+(function(){
+  let DB = [];
+  let usernameKey = null, passwordKey = null;
+
+  function openModal(msg, details){
+    document.getElementById('modalMessage').innerHTML = msg || '';
+    document.getElementById('modalDetails').innerHTML = details || '';
+    document.getElementById('modalBackdrop').style.display = 'flex';
+  }
+  function updateModal(msg, details){
+    if (msg !== undefined) document.getElementById('modalMessage').innerHTML = msg;
+    if (details !== undefined) document.getElementById('modalDetails').innerHTML = details;
+  }
+
+  function inferKeys(sample){
+    const keys = Object.keys(sample||{});
+    const userCands = ['username','user','نام_کاربری','شماره_واحد','unit','unit_number','unitnumber','واحد'];
+    const passCands = ['password','pass','رمز','رمز_عبور','پسورد'];
+    function pick(cands){
+      for(const c of cands){ if(keys.includes(c)) return c; }
+      for(const k of keys){ const kk = String(k).toLowerCase(); if(cands.some(c=>kk.includes(c))) return k; }
+      return null;
+    }
+    usernameKey = pick(userCands) || keys[0];
+    passwordKey = pick(passCands);
+  }
+
+  async function loadXLSX(){
+    const res = await fetch('site-db.xlsx', {cache:'no-store'});
+    if(!res.ok) throw new Error('خطا در خواندن فایل اکسل');
+    const buf = await res.arrayBuffer();
+    const wb = XLSX.read(buf, {type:'array'});
+    const sheet = wb.Sheets[wb.SheetNames[0]];
+    const rows = XLSX.utils.sheet_to_json(sheet, {defval:''});
+    DB = rows;
+    if(DB.length) inferKeys(DB[0]);
+  }
+
+  // Bind to existing form without changing markup
+  window.addEventListener('DOMContentLoaded', function(){
+    const form = document.querySelector('main form');
+    if(!form) return;
+    form.addEventListener('submit', async function(e){
+      e.preventDefault();
+      openModal('<span class="spinner"></span> لطفاً منتظر بمانید…', 'در حال بررسی اطلاعات ورود');
+
+      try{
+        if(!DB.length) await loadXLSX();
+        const username = (document.getElementById('username')||{}).value?.trim() || '';
+        const password = (document.getElementById('password')||{}).value?.trim() || '';
+
+        const rec = DB.find(row=>{
+          const u = String(row[usernameKey] ?? '').trim();
+          const p = passwordKey ? String(row[passwordKey] ?? '').trim() : '';
+          return (u === username) && (!passwordKey || p === password);
+        });
+
+        if(rec){
+          // Build details list (exclude password field)
+          const list = Object.entries(rec).filter(([k])=>k !== passwordKey).map(([k,v])=>{
+            const safeV = String(v ?? '').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+            return `<div><strong>${String(k).replace(/_/g,' ')}</strong>: ${safeV}</div>`;
+          }).join('');
+          updateModal('ورود با موفقیت انجام شد ✅', list);
+        } else {
+          updateModal('نام کاربری یا رمز عبور نادرست است. ❌', '');
+        }
+      }catch(err){
+        updateModal('امکان دسترسی به دیتا بیس در حال حاضر مقدور نیست  ❌');
+      }
+    });
+  });
+})();
+</script>
 
 </body>
 </html>
