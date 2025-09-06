@@ -379,5 +379,53 @@
   });
 })();
 </script>
+
+<script>
+(function(){
+  // Add a small diagnostics panel & classic-form fallback without changing the page layout.
+  function addDiagnostics(){
+    if (document.getElementById('diagPanel')) return;
+    const div = document.createElement('div');
+    div.id = 'diagPanel';
+    div.style.cssText = 'position:fixed;bottom:12px;left:12px;background:rgba(0,0,0,.6);color:#fff;padding:10px 12px;border-radius:10px;font-size:12px;z-index:9999;backdrop-filter:blur(3px)';
+    div.innerHTML = '<b>Diag</b>: <button id="runDiag" style="margin-left:6px">Run</button> <button id="classicPost" style="margin-left:6px">Classic POST</button> <span id="diagResult" style="margin-left:8px;opacity:.9"></span>';
+    document.body.appendChild(div);
+
+    document.getElementById('runDiag').onclick = async function(){
+      const resEl = document.getElementById('diagResult');
+      resEl.textContent = '…';
+      const items = [];
+      items.push('protocol='+location.protocol);
+      items.push('online='+navigator.onLine);
+      try {
+        const ping = await fetch('https://script.google.com/macros/s/AKfycbzGSKWbMFMOhEPrvSdbZXrZNxI1mOmW73qOZc8US9uixxkuEE_UOClQMWcoX1Ttve8aVw/exec', { method:'POST', mode:'cors', body:new URLSearchParams({username:'__ping__',password:'__ping__'}) });
+        items.push('status='+ping.status);
+        const text = await ping.text();
+        items.push('bodySample='+text.slice(0,60).replace(/</g,'<').replace(/>/g,'>'));
+      } catch (e){
+        items.push('fetchError='+String(e && e.message || e));
+      }
+      resEl.textContent = items.join(' | ');
+      console.log('[Diag]', items);
+    };
+
+    document.getElementById('classicPost').onclick = function(){
+      // Submit a classic HTML form in a new tab; bypasses CORS so we can see true server response.
+      const f = document.createElement('form');
+      f.action = 'https://script.google.com/macros/s/AKfycbzGSKWbMFMOhEPrvSdbZXrZNxI1mOmW73qOZc8US9uixxkuEE_UOClQMWcoX1Ttve8aVw/exec';
+      f.method = 'POST';
+      f.target = '_blank';
+      const u = document.createElement('input'); u.name = 'username'; u.value = '__probe__';
+      const p = document.createElement('input'); p.name = 'password'; p.value = '__probe__';
+      f.appendChild(u); f.appendChild(p);
+      document.body.appendChild(f);
+      f.submit();
+      setTimeout(()=>{ f.remove(); }, 500);
+    };
+  }
+
+  window.addEventListener('DOMContentLoaded', addDiagnostics);
+})();
+</script>
 </body>
 </html>
