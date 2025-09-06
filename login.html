@@ -280,7 +280,7 @@
             const safeV = String(v ?? '').replace(/</g,'&lt;').replace(/>/g,'&gt;');
             return `<div><strong>${String(k).replace(/_/g,' ')}</strong>: ${safeV}</div>`;
           }).join('');
-          updateModal('ورود با موفقیت انجام شد ✅', '',list);
+          updateModal('ورود با موفقیت انجام شد ✅',list);
         } else {
           updateModal('نام کاربری یا رمز عبور نادرست است. ❌', '');
         }
