@@ -260,10 +260,6 @@
     const form = document.querySelector('main form');
     if(!form) return;
     form.addEventListener('submit', async function(e){
-      if (location.protocol === 'file:') {
-        show('⚠️ اجرای فایل به‌صورت file:// باعث خطای اتصال می‌شود.', 'لطفاً فایل را با یک وب‌سرور محلی باز کنید (مثلاً: npx serve).');
-        // ادامه می‌دهیم تا اگر کاربر روی سرور است هم کار کند
-      }
       e.preventDefault();
       openModal('<span class="spinner"></span> لطفاً منتظر بمانید…', 'در حال بررسی اطلاعات ورود');
 
@@ -297,134 +293,81 @@
 </script>
 
 
-<!-- Injected secure login handler (no visual changes) -->
+<!-- Injected iframe-transport login (CORS-free) -->
 <script>
 (function(){
   const ENDPOINT = 'https://script.google.com/macros/s/AKfycbzGSKWbMFMOhEPrvSdbZXrZNxI1mOmW73qOZc8US9uixxkuEE_UOClQMWcoX1Ttve8aVw/exec';
 
-  // Utility: show messages using existing modal if present, else fallback to alert()
   function getEl(id){ return document.getElementById(id); }
   function show(msg, details){
-    const backdrop = getEl('modalBackdrop');
-    const msgEl = getEl('modalMessage');
-    const detEl = getEl('modalDetails');
-    if (backdrop && msgEl) {
-      msgEl.innerHTML = msg || '';
-      if (detEl) detEl.innerHTML = details || '';
-      backdrop.style.display = 'flex';
-    } else {
-      alert((msg || '') + (details ? ('\n' + (typeof details === 'string' ? details : JSON.stringify(details))) : ''));
-    }
+    const b = getEl('modalBackdrop'), m = getEl('modalMessage'), d = getEl('modalDetails');
+    if (b && m){ m.innerHTML = msg || ''; if (d) d.innerHTML = details || ''; b.style.display = 'flex'; }
+    else { alert((msg||'') + (details? ('\n'+details):'')); }
   }
   function update(msg, details){
-    const msgEl = getEl('modalMessage');
-    const detEl = getEl('modalDetails');
-    if (msgEl && msg !== undefined) msgEl.innerHTML = msg;
-    if (detEl && details !== undefined) detEl.innerHTML = details;
+    const m = getEl('modalMessage'), d = getEl('modalDetails');
+    if (m && msg !== undefined) m.innerHTML = msg;
+    if (d && details !== undefined) d.innerHTML = details;
+  }
+  function sanitize(v){ return String(v ?? '').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  // Create a hidden iframe target for classic form POST that can reply via postMessage.
+  function ensureIframe(){
+    let ifr = document.getElementById('as_iframe_transport');
+    if (!ifr){
+      ifr = document.createElement('iframe');
+      ifr.name = 'as_iframe_transport';
+      ifr.id = 'as_iframe_transport';
+      ifr.style.display = 'none';
+      document.body.appendChild(ifr);
+    }
+    return ifr;
   }
 
-  function sanitize(v){
-    return String(v ?? '').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  }
+  // Listen for responses from Apps Script (HtmlService) via postMessage
+  window.addEventListener('message', function(ev){
+    try{
+      const data = typeof ev.data === 'string' ? JSON.parse(ev.data) : ev.data;
+      if (!data || !data.__as_bridge) return;
+      if (data.ok){
+        const list = Object.entries(data.profile || {}).map(([k,v])=>{
+          return `<div><strong>${sanitize(k.replace(/_/g,' '))}</strong>: ${sanitize(v)}</div>`;
+        }).join('');
+        update('ورود با موفقیت انجام شد ✅', list || '');
+      } else {
+        update('نام کاربری یا رمز عبور نادرست است. ❌', '');
+      }
+    }catch(_){}
+  });
 
   window.addEventListener('DOMContentLoaded', function(){
-    // Try to locate a login form. Prefer a form containing #username and #password.
-    let form = document.querySelector('form');
-    const u = document.getElementById('username');
-    const p = document.getElementById('password');
-    if (!form && (u || p)) form = (u || p)?.closest('form');
+    const form = document.querySelector('form') || document.getElementById('loginForm') || document.querySelector('main form');
+    if (!form) return;
+    ensureIframe();
 
-    if (!form) return; // no changes if no form is present
-
-    // Prevent any previous submit handlers from leaking credentials by overriding submit.
-    form.addEventListener('submit', async function(e){
-      if (location.protocol === 'file:') {
-        show('⚠️ اجرای فایل به‌صورت file:// باعث خطای اتصال می‌شود.', 'لطفاً فایل را با یک وب‌سرور محلی باز کنید (مثلاً: npx serve).');
-        // ادامه می‌دهیم تا اگر کاربر روی سرور است هم کار کند
-      }
+    form.addEventListener('submit', function(e){
       e.preventDefault();
-
       const username = (document.getElementById('username')||{}).value?.trim() || '';
       const password = (document.getElementById('password')||{}).value?.trim() || '';
 
       show('<span class="spinner"></span> لطفاً منتظر بمانید…', 'در حال بررسی اطلاعات ورود');
 
-      try{
-        const body = new URLSearchParams({ username, password });
-        const res = await fetch(ENDPOINT, { method: 'POST', mode: 'cors', body });
-        let data;
-        try { data = await res.json(); } catch (e) { data = null; }
-
-        if (!res.ok){
-          const text = await res.text();
-          update('❌ پاسخ نامعتبر از سرور', `Status: ${res.status} ${res.statusText}<br>Body: ${sanitize(text)}`);
-          return;
-        }
-        if (data && data.ok){
-          // Render non-sensitive profile fields if elements exist; else just success text.
-          const list = Object.entries(data.profile || {}).map(([k,v])=>{
-            return `<div><strong>${sanitize(k.replace(/_/g,' '))}</strong>: ${sanitize(v)}</div>`;
-          }).join('');
-          update('ورود با موفقیت انجام شد ✅', list || '');
-          // Optionally: redirect after a short delay if your page expects it.
-          // setTimeout(()=>{ window.location.href = 'index.html'; }, 1000);
-        } else {
-          update('نام کاربری یا رمز عبور نادرست است. ❌', '');
-        }
-      } catch (err){
-        update('❌ خطا در ارتباط با سرور', sanitize(err && err.message ? err.message : String(err)));
-        update('خطا در ارتباط با سرور. ❌', '');
-      }
-    }, true);
-  });
-})();
-</script>
-
-<script>
-(function(){
-  // Add a small diagnostics panel & classic-form fallback without changing the page layout.
-  function addDiagnostics(){
-    if (document.getElementById('diagPanel')) return;
-    const div = document.createElement('div');
-    div.id = 'diagPanel';
-    div.style.cssText = 'position:fixed;bottom:12px;left:12px;background:rgba(0,0,0,.6);color:#fff;padding:10px 12px;border-radius:10px;font-size:12px;z-index:9999;backdrop-filter:blur(3px)';
-    div.innerHTML = '<b>Diag</b>: <button id="runDiag" style="margin-left:6px">Run</button> <button id="classicPost" style="margin-left:6px">Classic POST</button> <span id="diagResult" style="margin-left:8px;opacity:.9"></span>';
-    document.body.appendChild(div);
-
-    document.getElementById('runDiag').onclick = async function(){
-      const resEl = document.getElementById('diagResult');
-      resEl.textContent = '…';
-      const items = [];
-      items.push('protocol='+location.protocol);
-      items.push('online='+navigator.onLine);
-      try {
-        const ping = await fetch('https://script.google.com/macros/s/AKfycbzGSKWbMFMOhEPrvSdbZXrZNxI1mOmW73qOZc8US9uixxkuEE_UOClQMWcoX1Ttve8aVw/exec', { method:'POST', mode:'cors', body:new URLSearchParams({username:'__ping__',password:'__ping__'}) });
-        items.push('status='+ping.status);
-        const text = await ping.text();
-        items.push('bodySample='+text.slice(0,60).replace(/</g,'<').replace(/>/g,'>'));
-      } catch (e){
-        items.push('fetchError='+String(e && e.message || e));
-      }
-      resEl.textContent = items.join(' | ');
-      console.log('[Diag]', items);
-    };
-
-    document.getElementById('classicPost').onclick = function(){
-      // Submit a classic HTML form in a new tab; bypasses CORS so we can see true server response.
+      // Build a one-off classic form to post to the iframe target
       const f = document.createElement('form');
-      f.action = 'https://script.google.com/macros/s/AKfycbzGSKWbMFMOhEPrvSdbZXrZNxI1mOmW73qOZc8US9uixxkuEE_UOClQMWcoX1Ttve8aVw/exec';
+      f.action = ENDPOINT;
       f.method = 'POST';
-      f.target = '_blank';
-      const u = document.createElement('input'); u.name = 'username'; u.value = '__probe__';
-      const p = document.createElement('input'); p.name = 'password'; p.value = '__probe__';
-      f.appendChild(u); f.appendChild(p);
+      f.target = 'as_iframe_transport';
+
+      const u = document.createElement('input'); u.name = 'username'; u.value = username;
+      const p = document.createElement('input'); p.name = 'password'; p.value = password;
+      const t = document.createElement('input'); t.name = '_transport'; t.value = 'iframe';
+      f.appendChild(u); f.appendChild(p); f.appendChild(t);
+
       document.body.appendChild(f);
       f.submit();
       setTimeout(()=>{ f.remove(); }, 500);
-    };
-  }
-
-  window.addEventListener('DOMContentLoaded', addDiagnostics);
+    }, true);
+  });
 })();
 </script>
 </body>
