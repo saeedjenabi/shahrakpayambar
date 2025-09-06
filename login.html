@@ -260,6 +260,10 @@
     const form = document.querySelector('main form');
     if(!form) return;
     form.addEventListener('submit', async function(e){
+      if (location.protocol === 'file:') {
+        show('⚠️ اجرای فایل به‌صورت file:// باعث خطای اتصال می‌شود.', 'لطفاً فایل را با یک وب‌سرور محلی باز کنید (مثلاً: npx serve).');
+        // ادامه می‌دهیم تا اگر کاربر روی سرور است هم کار کند
+      }
       e.preventDefault();
       openModal('<span class="spinner"></span> لطفاً منتظر بمانید…', 'در حال بررسی اطلاعات ورود');
 
@@ -334,6 +338,10 @@
 
     // Prevent any previous submit handlers from leaking credentials by overriding submit.
     form.addEventListener('submit', async function(e){
+      if (location.protocol === 'file:') {
+        show('⚠️ اجرای فایل به‌صورت file:// باعث خطای اتصال می‌شود.', 'لطفاً فایل را با یک وب‌سرور محلی باز کنید (مثلاً: npx serve).');
+        // ادامه می‌دهیم تا اگر کاربر روی سرور است هم کار کند
+      }
       e.preventDefault();
 
       const username = (document.getElementById('username')||{}).value?.trim() || '';
@@ -344,8 +352,14 @@
       try{
         const body = new URLSearchParams({ username, password });
         const res = await fetch(ENDPOINT, { method: 'POST', mode: 'cors', body });
-        const data = await res.json();
+        let data;
+        try { data = await res.json(); } catch (e) { data = null; }
 
+        if (!res.ok){
+          const text = await res.text();
+          update('❌ پاسخ نامعتبر از سرور', `Status: ${res.status} ${res.statusText}<br>Body: ${sanitize(text)}`);
+          return;
+        }
         if (data && data.ok){
           // Render non-sensitive profile fields if elements exist; else just success text.
           const list = Object.entries(data.profile || {}).map(([k,v])=>{
@@ -358,6 +372,7 @@
           update('نام کاربری یا رمز عبور نادرست است. ❌', '');
         }
       } catch (err){
+        update('❌ خطا در ارتباط با سرور', sanitize(err && err.message ? err.message : String(err)));
         update('خطا در ارتباط با سرور. ❌', '');
       }
     }, true);
